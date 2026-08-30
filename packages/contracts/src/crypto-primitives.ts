@@ -86,3 +86,22 @@ export async function aesGcmDecrypt(
   );
   return new Uint8Array(decrypted);
 }
+
+export async function hmacSha256(
+  key: Uint8Array,
+  input: Uint8Array,
+): Promise<Uint8Array> {
+  const cryptoKey = await crypto.subtle.importKey(
+    'raw',
+    toArrayBuffer(key),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign'],
+  );
+  const signature = await crypto.subtle.sign(
+    'HMAC',
+    cryptoKey,
+    toArrayBuffer(input),
+  );
+  return new Uint8Array(signature);
+}

@@ -23,3 +23,8 @@ export {
   openPatientAnswer,
   sealPatientAnswer,
 } from './response-envelope.js';
+export { signManagementRequest } from './management-auth.js';
+export type {
+  ManagementRequestInput,
+  SignedManagementRequest,
+} from './management-auth.js';
