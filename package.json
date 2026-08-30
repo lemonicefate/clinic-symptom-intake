@@ -1,0 +1,13 @@
+{
+  "name": "clinic-symptom-intake",
+  "private": true,
+  "packageManager": "pnpm@11.19.0",
+  "scripts": {
+    "build": "pnpm --filter @clinic-symptom-intake/contracts build",
+    "platform:sync": "node scripts/sync-platform.mjs",
+    "postinstall": "node scripts/write-platform-marker.mjs",
+    "test": "pnpm --filter @clinic-symptom-intake/contracts test",
+    "typecheck": "pnpm --filter @clinic-symptom-intake/contracts typecheck",
+    "verify": "pnpm typecheck && pnpm test && pnpm build"
+  }
+}
