@@ -1,4 +1,16 @@
-import { fromHex, toHex } from '../dist/bytes.js';
+import {
+  concatBytes,
+  fromBase64url,
+  fromHex,
+  toBase64url,
+  toHex,
+  uint32be,
+} from '../dist/bytes.js';
+import {
+  aesGcmEncrypt,
+  hmacSha256,
+  sha256,
+} from '../dist/crypto-primitives.js';
 import {
   createPatientVerifier,
   derivePublicTokenKeys,
@@ -13,7 +25,17 @@ const VECTOR = {
   payloadKeyHex: '9afb9a6ec325224d696556687ee47ebf6c4b6120e5b8a8ad839e9d04d68f3998',
   lookupId: 'UGCJiXT4ShjMhMiYGNTEuIu3E3ol5KJzEYsp2xV01_A',
   patientVerifierHex: '5e40b4ce2fdc71552a8b4368f14b6f9b95d1b715640348a4ab1455d3da6d99b5',
+  plaintextUtf8: '{"answerVersion":1,"symptoms":[{"duration":{"unit":"day","value":2},"laterality":"left","severity":4,"symptomId":"ear.pain"}]}',
+  canonicalAadUtf8: '{"clinicRelayId":"clinic-test-01","contentVersion":"ent.synthetic.v1","expiresAt":1893427200,"lookupId":"UGCJiXT4ShjMhMiYGNTEuIu3E3ol5KJzEYsp2xV01_A","protocolVersion":1,"revision":1,"submissionId":"00000000-0000-4000-8000-000000000001"}',
+  nonceBase64url: 'oKGio6Slpqeoqaqr',
+  ciphertextBase64url: 'sTp8VK4BCT7Bnl7FJiPVvd68IPkYvGQeQFHCSETsdhl-sCzdSdLA5-Y6vuc2dpPCm2mLwMvrIkv-zkmvS1S8FjDkWFatylV62hIGY4farEIbK9k3Akj3w-4JXtjtqHkjclcg3LBZRogExIeg5rPwmMf0hJg-61oZzoKcVQczhoW3EzvIW9tjinYo3M8hBA',
+  digestBase64url: 'iDdi4wUwUq_TdnV6WwuM86jn6X1bXXysTUn6qMp-OlM',
+  managementKeyHex: '202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f',
+  managementSigningInputUtf8: 'POST\n/v1/management/pull\n1893423600\n8PHy8_T19vf4-fr7_P3-_w\n86d2e9c200dedec71dae613b15748ff2bd2ef35b8f157946152dfd585cd5b6ba',
+  managementSignatureBase64url: 'rngVEMb-qOoV8SKdrd7A6KMOqi-6esCiVV3dNPSEkdQ',
 };
+
+const encoder = new TextEncoder();
 
 function assertEqual(name, actual, expected) {
   if (actual !== expected) {
@@ -33,6 +55,28 @@ export async function runBrowserVectors() {
     'patient verifier',
     toHex(await createPatientVerifier(keys.patientAuthKey)),
     VECTOR.patientVerifierHex,
+  );
+
+  const aad = encoder.encode(VECTOR.canonicalAadUtf8);
+  const nonce = fromBase64url(VECTOR.nonceBase64url);
+  const ciphertext = await aesGcmEncrypt(
+    keys.payloadKey,
+    nonce,
+    encoder.encode(VECTOR.plaintextUtf8),
+    aad,
+  );
+  assertEqual('ciphertext', toBase64url(ciphertext), VECTOR.ciphertextBase64url);
+  const digest = await sha256(concatBytes(uint32be(aad.length), aad, nonce, ciphertext));
+  assertEqual('envelope digest', toBase64url(digest), VECTOR.digestBase64url);
+
+  const managementSignature = await hmacSha256(
+    fromHex(VECTOR.managementKeyHex),
+    encoder.encode(VECTOR.managementSigningInputUtf8),
+  );
+  assertEqual(
+    'management signature',
+    toBase64url(managementSignature),
+    VECTOR.managementSignatureBase64url,
   );
   return { ok: true };
 }

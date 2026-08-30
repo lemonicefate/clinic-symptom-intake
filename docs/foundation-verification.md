@@ -20,7 +20,7 @@ Run:
 pnpm browser:vectors
 ```
 
-Open the printed `127.0.0.1` URL. The accessible status output must read `PASS`, the document status must be `pass`, and the browser console must contain no error. The page imports only the built dependency-free byte, SHA-256, HKDF, and Public Token modules.
+Open the printed `127.0.0.1` URL. The accessible status output must read `PASS`, the document status must be `pass`, and the browser console must contain no error. The page imports only the built dependency-free byte, SHA-256, HKDF, AES-GCM, HMAC, and Public Token modules.
 
 ## Independent vectors
 
