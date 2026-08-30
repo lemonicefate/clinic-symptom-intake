@@ -13,3 +13,8 @@ export type {
   ResponseMetadata,
   SymptomAnswer,
 } from './contracts.js';
+export {
+  createPatientVerifier,
+  derivePublicTokenKeys,
+} from './public-token.js';
+export type { PublicTokenKeys } from './public-token.js';
