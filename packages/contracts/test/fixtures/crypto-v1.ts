@@ -7,4 +7,27 @@ export const SYNTHETIC_CRYPTO_V1 = {
   payloadKeyHex: '9afb9a6ec325224d696556687ee47ebf6c4b6120e5b8a8ad839e9d04d68f3998',
   lookupId: 'UGCJiXT4ShjMhMiYGNTEuIu3E3ol5KJzEYsp2xV01_A',
   patientVerifierHex: '5e40b4ce2fdc71552a8b4368f14b6f9b95d1b715640348a4ab1455d3da6d99b5',
-} as const;
+  metadata: {
+    protocolVersion: 1,
+    clinicRelayId: 'clinic-test-01',
+    lookupId: 'UGCJiXT4ShjMhMiYGNTEuIu3E3ol5KJzEYsp2xV01_A',
+    contentVersion: 'ent.synthetic.v1',
+    submissionId: '00000000-0000-4000-8000-000000000001',
+    revision: 1,
+    expiresAt: 1893427200,
+  },
+  patientAnswer: {
+    answerVersion: 1,
+    symptoms: [{
+      symptomId: 'ear.pain',
+      laterality: 'left',
+      duration: { value: 2, unit: 'day' },
+      severity: 4,
+    }],
+  },
+  plaintextUtf8: '{"answerVersion":1,"symptoms":[{"duration":{"unit":"day","value":2},"laterality":"left","severity":4,"symptomId":"ear.pain"}]}',
+  canonicalAadUtf8: '{"clinicRelayId":"clinic-test-01","contentVersion":"ent.synthetic.v1","expiresAt":1893427200,"lookupId":"UGCJiXT4ShjMhMiYGNTEuIu3E3ol5KJzEYsp2xV01_A","protocolVersion":1,"revision":1,"submissionId":"00000000-0000-4000-8000-000000000001"}',
+  nonceBase64url: 'oKGio6Slpqeoqaqr',
+  ciphertextBase64url: 'sTp8VK4BCT7Bnl7FJiPVvd68IPkYvGQeQFHCSETsdhl-sCzdSdLA5-Y6vuc2dpPCm2mLwMvrIkv-zkmvS1S8FjDkWFatylV62hIGY4farEIbK9k3Akj3w-4JXtjtqHkjclcg3LBZRogExIeg5rPwmMf0hJg-61oZzoKcVQczhoW3EzvIW9tjinYo3M8hBA',
+  digestBase64url: 'iDdi4wUwUq_TdnV6WwuM86jn6X1bXXysTUn6qMp-OlM',
+};

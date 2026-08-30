@@ -18,3 +18,8 @@ export {
   derivePublicTokenKeys,
 } from './public-token.js';
 export type { PublicTokenKeys } from './public-token.js';
+export {
+  computeEnvelopeDigest,
+  openPatientAnswer,
+  sealPatientAnswer,
+} from './response-envelope.js';
