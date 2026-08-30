@@ -3,6 +3,7 @@
   "private": true,
   "packageManager": "pnpm@11.19.0",
   "scripts": {
+    "browser:vectors": "pnpm --filter @clinic-symptom-intake/contracts browser:vectors",
     "build": "pnpm --filter @clinic-symptom-intake/contracts build",
     "platform:sync": "node scripts/sync-platform.mjs",
     "postinstall": "node scripts/write-platform-marker.mjs",
