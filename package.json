@@ -7,7 +7,8 @@
     "build": "pnpm --filter @clinic-symptom-intake/contracts build",
     "platform:sync": "node scripts/sync-platform.mjs",
     "postinstall": "node scripts/write-platform-marker.mjs",
-    "test": "pnpm --filter @clinic-symptom-intake/contracts test",
+    "test": "pnpm test:platform && pnpm --filter @clinic-symptom-intake/contracts test",
+    "test:platform": "node --test scripts/sync-platform.test.mjs",
     "typecheck": "pnpm --filter @clinic-symptom-intake/contracts typecheck",
     "verify": "pnpm typecheck && pnpm test && pnpm build"
   }
