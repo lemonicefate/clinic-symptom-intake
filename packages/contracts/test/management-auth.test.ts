@@ -36,3 +36,20 @@ test.each(['GET', '/v1/management/pull?limit=100', '../pull'])(
     await expect(signManagementRequest(input)).rejects.toThrow();
   },
 );
+
+test.each([Number.MAX_SAFE_INTEGER + 1, 1e21])(
+  'rejects a timestamp outside the safe integer range: %s',
+  async (timestamp) => {
+    await expect(
+      signManagementRequest({
+        keyId: 'synthetic-key-01',
+        key: new Uint8Array(32),
+        method: 'POST',
+        path: '/v1/management/pull',
+        timestamp,
+        nonce: '8PHy8_T19vf4-fr7_P3-_w',
+        body: {},
+      }),
+    ).rejects.toThrow(/safe integer/u);
+  },
+);

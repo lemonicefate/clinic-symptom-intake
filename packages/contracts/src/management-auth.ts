@@ -34,8 +34,8 @@ export async function signManagementRequest(
   if (input.key.length !== 32) throw new TypeError('management key must be exactly 32 bytes');
   if (input.method !== 'POST') throw new TypeError('management method must be POST');
   if (!MANAGEMENT_PATH.test(input.path)) throw new TypeError('invalid management path');
-  if (!Number.isInteger(input.timestamp) || input.timestamp <= 0) {
-    throw new TypeError('management timestamp must be a positive integer');
+  if (!Number.isSafeInteger(input.timestamp) || input.timestamp <= 0) {
+    throw new TypeError('management timestamp must be a positive safe integer');
   }
   if (fromBase64url(input.nonce).length !== 16) {
     throw new TypeError('management nonce must be exactly 16 bytes');
