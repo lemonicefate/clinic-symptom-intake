@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" data-status="pending">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Synthetic Foundation Crypto Vectors</title>
+  </head>
+  <body>
+    <main>
+      <h1>Synthetic Foundation Crypto Vectors</h1>
+      <output id="result" role="status">RUNNING</output>
+    </main>
+    <script type="module">
+      import { runBrowserVectors } from './browser-vectors.mjs';
+
+      const result = document.querySelector('#result');
+      try {
+        await runBrowserVectors();
+        result.textContent = 'PASS';
+        document.documentElement.dataset.status = 'pass';
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        result.textContent = `FAIL: ${message}`;
+        document.documentElement.dataset.status = 'fail';
+        console.error(error);
+      }
+    </script>
+  </body>
+</html>
